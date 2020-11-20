@@ -16,16 +16,24 @@ Function cmdlet_validation(){
 Function Get-Service {
     [CmdletBinding()]
     Param(
-      [Parameter( Position = 0, ValueFromPipeline = $True )][String]$Name
+      [Parameter( Position = 0, ValueFromPipeline = $True)][String]$Name,
+      [Parameter( Position = 1, ValueFromPipeline = $True)][String]$Unit
     )
     #verify the required cmdlets in advance
     cmdlet_validation 'systemctl' | Out-Null
+    if (($Name |out-string).trim() -notlike ''){
+        if ($Unit) {
+            write-error "These parameters are not allowed to exist at same time [-Name] [-Unit]"
+            break
+        }
+        $Unit = $Name + ".service"
+    }
     #verify OS type
     if($IsLinux){
-        If ($Name) {
-            $services = & systemctl list-units $Name --type=service --no-legend --all --no-pager
+        If ($Unit) {
+            $services = & sudo systemctl list-units $Unit --type=service --no-legend --all --no-pager
         }else{
-            $services = & systemctl list-units --type=service --no-legend --all --no-pager
+            $services = & sudo systemctl list-units --type=service --no-legend --all --no-pager
         }
         $services = $services | ForEach-Object {
             $service = $_ -Split '\s+' |Where-Object {$_ -notlike ''}
