@@ -44,3 +44,5 @@ Function Get-Service {
     }
     return $services
 }
+
+Export-ModuleMember -Function Get-Service

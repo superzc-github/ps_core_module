@@ -6,18 +6,14 @@
     PowerShellVersion = "7.0"
 
     NestedModules = @(
-        "Get-Service",
-        "Start-Service",
-        "Stop-Service"
+        "Get-Service"
         )
 
     FormatsToProcess = @()
     TypesToProcess = @()
 
     FunctionsToExport = @(
-        "Get-Service",
-        "Start-Service",
-        "Stop-Service"
+        "Get-Service"
         )
 
     AliasesToExport = @()
